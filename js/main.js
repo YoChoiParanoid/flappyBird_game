@@ -1,6 +1,7 @@
 import { Ground } from "./ground.js";
 import { Bird } from "./bird.js";
 import { Pipes } from "./pipe.js";
+import { start } from "./screen.js";
 
 // Set canvas
 let canvas = document.querySelector('.canvas');
@@ -29,16 +30,6 @@ pipe_bottom.src = './assets/img/pipe-green.png';
 
 let game = 'start';
 let frame = 0;
-
-// Screen
-const start = {
-    draw: function() {
-        ctx.beginPath();
-        ctx.drawImage(message, 0, 0, 184, 48, canvas.width / 2 - 92, 50, 184, 48);
-        ctx.drawImage(message, 0, 100, 184, 53, canvas.width / 2 - 92, 200, 184, 53);
-        ctx.drawImage(message, 0, 168, 184, 99, canvas.width / 2 - 92, 350, 184, 99);
-    }
-}
 
 // Background
 const bg = {
@@ -144,7 +135,7 @@ canvas.addEventListener('click', function() {
 function draw() {
     bg.draw();
     if (game == 'start') {
-        start.draw();
+        start.draw(ctx, message, canvas);
     }
     drawArrPipes();
     drawArrGround();
