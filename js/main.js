@@ -1,5 +1,6 @@
 import { Ground } from "./ground.js";
 import { Bird } from "./bird.js";
+import { Pipes } from "./pipe.js";
 
 // Set canvas
 let canvas = document.querySelector('.canvas');
@@ -21,6 +22,10 @@ const bird_down = new Image();
 bird_down.src = '/assets/img/yellowbird-downflap.png'
 const bird_mid = new Image();
 bird_mid.src = '/assets/img/yellowbird-midflap.png'
+const pipe_top = new Image();
+pipe_top.src = './assets/img/pipe-green-top.png';
+const pipe_bottom = new Image();
+pipe_bottom.src = './assets/img/pipe-green.png';
 
 let game = 'start';
 let frame = 0;
@@ -84,8 +89,44 @@ function uppdateArrGround() {
     }
 }
 
+// Add Pipes
+const pipe_image = [
+    pipe_top,
+    pipe_bottom
+]
+
+let arrPipes = [];
+
+function random (min, max) {
+    return Math.ceil(Math.random() * (max - min) + min);
+}
+
+function newPipe() {
+    for (let i = 1; i < 4; i++) {
+        let pipe = new Pipes(random(480, 600) * i, random(-250, -15.5), 200, pipe_image, ctx);
+        arrPipes.push(pipe);
+    }
+}
+
+newPipe();
+
+function drawArrPipes() {
+    arrPipes.forEach(pipe => pipe.draw());
+}
+
+function uppdateArrPipes() {
+    arrPipes.forEach(pipe => {pipe.cX += pipe.dX});
+
+    if (arrPipes[0].cX + arrPipes[0].cW <= 0) {
+        arrPipes.splice(0, 1);
+        let pipe = new Pipes(arrPipes[arrPipes.length - 1].cX + random(480, 600), random(-250, -15.5), random(150, 200), pipe_image, ctx);
+        arrPipes.push(pipe);
+        console.log(arrPipes.length);
+    }
+}
+
 // Click Event
-canvas.addEventListener('click', function(event) {
+canvas.addEventListener('click', function() {
     switch (game) {
         case 'start':
             game = 'play';
@@ -105,12 +146,14 @@ function draw() {
     if (game == 'start') {
         start.draw();
     }
+    drawArrPipes();
     drawArrGround();
     bird.draw(frame, game);
 }
 
 function update() {
     if (game == 'play') {
+        uppdateArrPipes();
         uppdateArrGround();
     }
 }
