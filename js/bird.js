@@ -1,5 +1,5 @@
 export class Bird {
-    constructor (cX, cY, game, birdfly, ctx) {
+    constructor (cX, cY, birdfly, ctx) {
         this.sX = 0;
         this.sY = 0;
         this.sW = 34;
@@ -9,16 +9,16 @@ export class Bird {
         this.cW = 34;
         this.cH = 24;
         this.i = 0;
-        this.game = game;
         this.birdfly = birdfly;
         this.ctx = ctx;
     }
 
     
 
-    draw(frame) {
-        if (this.game == 'start') {
+    draw(frame, game) {
+        if (game == 'start') {
             if (frame % 32 == 0) {
+                console.log(frame);
                 this.i++;
                 if (this.i > 2) {
                     this.i = 0;
@@ -26,7 +26,7 @@ export class Bird {
             }
         }
         
-        if (this.game == 'play') {
+        if (game == 'play') {
             if (frame % 16 == 0) {
                 console.log(frame);
                 this.i++;

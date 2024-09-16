@@ -61,7 +61,7 @@ const birdfly = [
     bird_mid,
     bird_down
 ]
-let bird = new Bird(150, canvas.height / 2 + 30, game, birdfly, ctx);
+let bird = new Bird(150, canvas.height / 2 + 30, birdfly, ctx);
 
 // Add Ground
 let arrGround = [];
@@ -74,14 +74,45 @@ function drawArrGround() {
     arrGround.forEach(gr => gr.draw())
 }
 
+function uppdateArrGround() {
+    arrGround.forEach(gr => {gr.cX += gr.dX});
+    if (arrGround[0].cX + arrGround[0].cW <= 0) {
+        arrGround.splice(0, 1);
+        let gr = new Ground(arrGround[0].cX + 477, 562.5, ground, ctx);
+        arrGround.push(gr);
+        console.log(arrGround.length);
+    }
+}
 
+// Click Event
+canvas.addEventListener('click', function(event) {
+    switch (game) {
+        case 'start':
+            game = 'play';
+            break;
+        case 'play':
+            console.log('playgame');
+            break;
+        case 'end':
+            console.log('endgame');
+            break;
+    }
+});
 
 // Main flow
 function draw() {
     bg.draw();
-    start.draw();
+    if (game == 'start') {
+        start.draw();
+    }
     drawArrGround();
-    bird.draw(frame);
+    bird.draw(frame, game);
+}
+
+function update() {
+    if (game == 'play') {
+        uppdateArrGround();
+    }
 }
 
 function animate() {
@@ -91,6 +122,7 @@ function animate() {
     if (frame == 320)
         frame = 0;
     draw();
+    update();
 }
 
 animate();
