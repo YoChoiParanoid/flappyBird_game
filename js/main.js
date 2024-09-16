@@ -1,13 +1,19 @@
+import { Ground } from "./ground.js";
+
+// Set canvas
 let canvas = document.querySelector('.canvas');
 let ctx = canvas.getContext('2d');
 
 canvas.height = 639;
 canvas.width = 477;
 
+// Variable
 const sprites = new Image();
 sprites.src = './assets/img/background-night.png';
 const message = new Image();
 message.src = './assets/img/message.png';
+const ground = new Image();
+ground.src = './assets/img/base.png';
 
 // Screen
 const start = {
@@ -39,10 +45,24 @@ const bg = {
     }
 }
 
+// Add Ground
+let arrGround = [];
+for (let i = 0; i < 2; i++) {
+    let gr = new Ground(477 * i, 562.5, ground, ctx);
+    arrGround.push(gr);
+}
 
+function drawArrGround() {
+    arrGround.forEach(gr => gr.draw())
+}
+
+
+
+// Main flow
 function draw() {
     bg.draw();
     start.draw();
+    drawArrGround();
 }
 
 function animate() {
