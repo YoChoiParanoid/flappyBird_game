@@ -2,6 +2,7 @@ import { Ground } from "./ground.js";
 import { Bird } from "./bird.js";
 import { Pipes } from "./pipe.js";
 import { start } from "./screen.js";
+import { Score } from "./score.js";
 
 // Set canvas
 let canvas = document.querySelector('.canvas');
@@ -30,6 +31,26 @@ pipe_bottom.src = './assets/img/pipe-green.png';
 
 let game = 'start';
 let frame = 0;
+
+const score = [];
+for (let i = 0; i <= 9; i++) {
+    const sco = new Image();
+    sco.src = './assets/img/' + i + '.png';
+    score.push(sco);
+}
+
+const image = [
+    {name: 0, img: score[0]},
+    {name: 1, img: score[1]},
+    {name: 2, img: score[2]},
+    {name: 3, img: score[3]},
+    {name: 4, img: score[4]},
+    {name: 5, img: score[5]},
+    {name: 6, img: score[6]},
+    {name: 7, img: score[7]},
+    {name: 8, img: score[8]},
+    {name: 9, img: score[9]}
+]
 
 // Background
 const bg = {
@@ -116,6 +137,9 @@ function uppdateArrPipes() {
     }
 }
 
+// Handle Score
+let sco = new Score(image, ctx, canvas);
+
 // Click Event
 canvas.addEventListener('click', function() {
     switch (game) {
@@ -139,6 +163,9 @@ function draw() {
     }
     drawArrPipes();
     drawArrGround();
+    if (game == 'play') {
+        sco.draw(0);
+    }
     bird.draw(frame, game);
 }
 
