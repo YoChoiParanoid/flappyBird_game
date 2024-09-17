@@ -148,6 +148,7 @@ canvas.addEventListener('click', function() {
             break;
         case 'play':
             console.log('playgame');
+            bird.v = -3;
             break;
         case 'end':
             console.log('endgame');
@@ -174,6 +175,7 @@ function update() {
         uppdateArrPipes();
         uppdateArrGround();
     }
+    bird.update(game);
 }
 
 function animate() {
