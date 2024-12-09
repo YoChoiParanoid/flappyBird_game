@@ -1,36 +1,32 @@
-import { Ground } from "./ground.js";
-import { Bird } from "./bird.js";
-import { Pipes } from "./pipe.js";
-import { start } from "./screen.js";
-import { Score } from "./score.js";
-
-// Set canvas
 let canvas = document.querySelector('.canvas');
 let ctx = canvas.getContext('2d');
 
 canvas.height = 639;
 canvas.width = 477;
 
-// Variable
 const sprites = new Image();
-sprites.src = '/flappyBird_game/assets/img/background-night.png';
 const message = new Image();
-message.src = '/flappyBird_game/assets/img/message.png';
 const ground = new Image();
-ground.src = '/flappyBird_game/assets/img/base.png';
 const bird_up = new Image();
-bird_up.src = '/flappyBird_game/assets/img/yellowbird-upflap.png'
 const bird_down = new Image();
-bird_down.src = '/flappyBird_game/assets/img/yellowbird-downflap.png'
 const bird_mid = new Image();
-bird_mid.src = '/flappyBird_game/assets/img/yellowbird-midflap.png'
 const pipe_top = new Image();
-pipe_top.src = '/flappyBird_game/assets/img/pipe-green-top.png';
 const pipe_bottom = new Image();
-pipe_bottom.src = '/flappyBird_game/assets/img/pipe-green.png';
+const gameover = new Image();
+const playagain = new Image();
+const scoreboard = new Image();
 
-let game = 'start';
-let frame = 0;
+sprites.src = './assets/img/background-night.png';
+message.src = './assets/img/message.png';
+ground.src = './assets/img/base.png';
+bird_up.src = '/assets/img/yellowbird-upflap.png'
+bird_down.src = '/assets/img/yellowbird-downflap.png'
+bird_mid.src = '/assets/img/yellowbird-midflap.png'
+pipe_top.src = './assets/img/pipe-green-top.png';
+pipe_bottom.src = './assets/img/pipe-green.png';
+gameover.src = './assets/img/gameover.png';
+playagain.src = './assets/img/spri.png';
+scoreboard.src = './assets/img/spri.png';
 
 const score = [];
 for (let i = 0; i <= 9; i++) {
@@ -39,7 +35,7 @@ for (let i = 0; i <= 9; i++) {
     score.push(sco);
 }
 
-const image = [
+const arrNumber = [
     {name: 0, img: score[0]},
     {name: 1, img: score[1]},
     {name: 2, img: score[2]},
@@ -52,38 +48,54 @@ const image = [
     {name: 9, img: score[9]}
 ]
 
-// Background
-const bg = {
-    // background position
-    sX: 0,
-    sY: 70,
-    sW: 288,
-    sH: 339.6226415,
+let game = 'start';
+let frame = 0;
 
-    // canvas view position
-    cX: 0,
-    cY: 0,
-    cW: 477,
-    cH: 562.5,
-
+// Screen
+const start = {
     draw: function() {
         ctx.beginPath();
-        ctx.drawImage(sprites, this.sX, this.sY, this.sW, this.sH, this.cX, this.cY, this.cW, this.cH);
+        ctx.drawImage(message, 0, 0, 184, 48, canvas.width / 2 - 92, 50, 184, 48);
+        ctx.drawImage(message, 0, 100, 184, 53, canvas.width / 2 - 92, 200, 184, 53);
+        ctx.drawImage(message, 0, 168, 184, 99, canvas.width / 2 - 92, 350, 184, 99);
     }
 }
 
-// Bird
-const birdfly = [
-    bird_up,
-    bird_mid,
-    bird_down
-]
-let bird = new Bird(150, canvas.height / 2 + 30, birdfly, ctx);
+const end = {
+    draw: function() {
+        ctx.beginPath();
+        ctx.drawImage(gameover, 0, 0, 192, 42, canvas.width / 2 - 96, 150, 192, 42);
+        ctx.drawImage(scoreboard, 3, 259, 113, 57, canvas.width / 2 - 113, 230, 226, 114);
+        ctx.drawImage(playagain, 354, 118, 52, 29, canvas.width / 2 - 52, 380, 104, 58);
+    }
+}
 
-// Add Ground
+// Ground
+class Ground {
+    constructor(cX, cY) {
+       // vị trí của nền đất
+        this.sX = 0;
+        this.sY = 0;
+        this.sW = 336;
+        this.sH = 112;
+
+        // Vị trí sẽ hiển thị trên canvas
+        this.cX = cX;
+        this.cY = cY;
+        this.cW = 477;
+        this.cH = 76.5;
+
+        this.dX= -1;
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.drawImage(ground, this.sX, this.sY, this.sW, this.sH, this.cX, this.cY, this.cW, this.cH);
+    }
+}
 let arrGround = [];
 for (let i = 0; i < 2; i++) {
-    let gr = new Ground(477 * i, 562.5, ground, ctx);
+    let gr = new Ground(477 * i, 562.5);
     arrGround.push(gr);
 }
 
@@ -95,27 +107,143 @@ function uppdateArrGround() {
     arrGround.forEach(gr => {gr.cX += gr.dX});
     if (arrGround[0].cX + arrGround[0].cW <= 0) {
         arrGround.splice(0, 1);
-        let gr = new Ground(arrGround[0].cX + 477, 562.5, ground, ctx);
+        let gr = new Ground(arrGround[0].cX + 477, 562.5);
         arrGround.push(gr);
         console.log(arrGround.length);
     }
 }
 
-// Add Pipes
-const pipe_image = [
-    pipe_top,
-    pipe_bottom
-]
+// Background
+const bg = {
+    // vị trí của bg
+    sX: 0,
+    sY: 70,
+    sW: 288,
+    sH: 339.6226415,
 
-let arrPipes = [];
+    // Vị trí sẽ hiển thị trên canvas
+    cX: 0,
+    cY: 0,
+    cW: 477,
+    cH: 562.5,
 
+    draw: function() {
+        ctx.beginPath();
+        ctx.drawImage(sprites, this.sX, this.sY, this.sW, this.sH, this.cX, this.cY, this.cW, this.cH);
+    }
+}
+
+// Bird Start
+class Bird {
+    constructor (cX, cY) {
+        this.sX = 0;
+        this.sY = 0;
+        this.sW = 34;
+        this.sH = 24;
+        this.cX = cX;
+        this.cY = cY;
+        this.cW = 34;
+        this.cH = 24;
+        this.i = 0;
+        this.v = 0;
+        this.a = 0.048;
+    }
+
+    birdfly = [
+        bird_up,
+        bird_mid,
+        bird_down
+    ]
+
+    draw() {
+        if (game == 'start') {
+            if (frame % 35 == 0) {
+                this.i++;
+                if (this.i > 2) {
+                    this.i = 0;
+                }
+            }
+        }
+
+        if (game == 'play') {
+            if (frame % 16 == 0) {
+                this.i++;
+                if (this.i > 2) {
+                    this.i = 0;
+                }
+            }
+        }
+
+        ctx.drawImage(this.birdfly[this.i], this.sX, this.sY, this.sW, this.sH, this.cX, this.cY, this.cW, this.cH);
+    }
+
+    update() {
+        if (game == 'play' || game == 'end') {
+            this.v += this.a;
+            this.cY += this.v;
+
+            // Va cham voi nen dat
+            if (this.cY + this.v + this.cH >= 562.5) {
+                game = 'end';
+                this.v = 0;
+                this.cY = 538.5;
+            }
+
+            // Va cham voi duong ong
+            if (bird.cX + bird.cW > arrPipes[0].cX + 5 && bird.cX < arrPipes[0].cX + arrPipes[0].cW
+                && (bird.cY < arrPipes[0].cY + arrPipes[0].cH ||
+                    bird.cY + bird.cH > arrPipes[0].cY + arrPipes[0].cH + arrPipes[0].space
+                )
+            ) {
+                game = 'end';
+            }
+
+            // An diem
+            if (bird.cX == arrPipes[0].cX + 52) {
+                sco.value ++;
+            }
+        }
+    }
+
+
+}
+
+let bird = new Bird(150, canvas.height / 2 + 30);
+
+// Random
 function random (min, max) {
     return Math.ceil(Math.random() * (max - min) + min);
 }
 
+class Pipes {
+    constructor (cX, cY, space) {
+        this.sW = 52;
+        this.sH = 320;
+        this.cX = cX;
+        this.cY = cY;
+        this.cW = 52;
+        this.cH = 320;
+        this.sXt = 0;
+        this.sYt = 0;
+        this.sXb = 0;
+        this.sYb = 0;
+        this.space = space;
+        this.dX = -1;
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.drawImage(pipe_top, this.sXt, this.sYt, this.sW, this.sH, this.cX, this.cY, this.cW, this.cH);
+        ctx.drawImage(pipe_bottom, this.sXt, this.sYt, this.sW, this.sH, this.cX,
+            this.cY + this.cH + this.space, this.cW, this.cH);
+    }
+}
+
+let arrPipes = [];
+
 function newPipe() {
     for (let i = 1; i < 4; i++) {
-        let pipe = new Pipes(random(480, 600) * i, random(-250, -15.5), 200, pipe_image, ctx);
+        let pipe = new Pipes(random(480, 600) * i, random(-250, -15.5), 200);
         arrPipes.push(pipe);
     }
 }
@@ -131,17 +259,44 @@ function uppdateArrPipes() {
 
     if (arrPipes[0].cX + arrPipes[0].cW <= 0) {
         arrPipes.splice(0, 1);
-        let pipe = new Pipes(arrPipes[arrPipes.length - 1].cX + random(480, 600), random(-250, -15.5), random(150, 200), pipe_image, ctx);
+        let pipe = new Pipes(arrPipes[arrPipes.length - 1].cX + random(480, 600), random(-250, -15.5), random(150, 200));
         arrPipes.push(pipe);
         console.log(arrPipes.length);
     }
 }
 
-// Handle Score
-let sco = new Score(image, ctx, canvas);
+class Score {
+    constructor (value) {
+        this.value = value;
+    }
 
-// Click Event
-canvas.addEventListener('click', function() {
+    draw() {
+        ctx.beginPath();
+        if (this.value >= 10) {
+            this.split = (this.value.toString()).split('');
+            arrNumber.forEach(number => {
+                if (this.split[0] == number.name) {
+                    ctx.drawImage(number.img, 0, 0, 24, 36, canvas.width / 2 - 12, 80, 24, 36);
+                }
+                if (this.split[1] == number.name) {
+                    ctx.drawImage(number.img, 0, 0, 24, 36, canvas.width / 2 + 12, 80, 24, 36);
+                }
+            });
+        }
+        else {
+            this.split = this.value.toString();
+            arrNumber.forEach(number => {
+                if (this.split[0] == number.name) {
+                    ctx.drawImage(number.img, 0, 0, 24, 36, canvas.width / 2 - 12, 80, 24, 36);
+                }
+            });
+        }
+    }
+}
+
+let sco = new Score(0);
+
+canvas.addEventListener('click', function(event) {
     switch (game) {
         case 'start':
             game = 'play';
@@ -152,22 +307,36 @@ canvas.addEventListener('click', function() {
             break;
         case 'end':
             console.log('endgame');
+            if (event.offsetX > canvas.width / 2 - 52 &&
+                event.offsetX < canvas.width / 2 + 52 &&
+                event.offsetY > 380 &&
+                event.offsetY < 380 + 58
+            ) {
+                sco.value = 0;
+                arrPipes = [];
+                newPipe();
+                bird.v = 0;
+                bird.cY = canvas.height / 2 - 12;
+                game = 'start';
+            }
             break;
     }
 });
 
-// Main flow
 function draw() {
     bg.draw();
     if (game == 'start') {
-        start.draw(ctx, message, canvas);
+        start.draw();
     }
     drawArrPipes();
     drawArrGround();
     if (game == 'play') {
-        sco.draw(0);
+        sco.draw();
     }
-    bird.draw(frame, game);
+    bird.draw();
+    if (game == 'end') {
+        end.draw();
+    }
 }
 
 function update() {
@@ -175,15 +344,13 @@ function update() {
         uppdateArrPipes();
         uppdateArrGround();
     }
-    bird.update(game);
+    bird.update();
 }
 
 function animate() {
     requestAnimationFrame(animate);
     ctx.clearRect(0,0,canvas.width, canvas.height);
     frame++;
-    if (frame == 320)
-        frame = 0;
     draw();
     update();
 }
