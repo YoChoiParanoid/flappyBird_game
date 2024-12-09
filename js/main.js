@@ -13,21 +13,21 @@ canvas.width = 477;
 
 // Variable
 const sprites = new Image();
-sprites.src = '/YoChoiParanoid/assets/img/background-night.png';
+sprites.src = '/flappyBird_game/assets/img/background-night.png';
 const message = new Image();
-message.src = '/YoChoiParanoid/assets/img/message.png';
+message.src = '/flappyBird_game/assets/img/message.png';
 const ground = new Image();
-ground.src = '/YoChoiParanoid/assets/img/base.png';
+ground.src = '/flappyBird_game/assets/img/base.png';
 const bird_up = new Image();
-bird_up.src = '/YoChoiParanoid/assets/img/yellowbird-upflap.png'
+bird_up.src = '/flappyBird_game/assets/img/yellowbird-upflap.png'
 const bird_down = new Image();
-bird_down.src = '/YoChoiParanoid/assets/img/yellowbird-downflap.png'
+bird_down.src = '/flappyBird_game/assets/img/yellowbird-downflap.png'
 const bird_mid = new Image();
-bird_mid.src = '/YoChoiParanoid/assets/img/yellowbird-midflap.png'
+bird_mid.src = '/flappyBird_game/assets/img/yellowbird-midflap.png'
 const pipe_top = new Image();
-pipe_top.src = '/YoChoiParanoid/assets/img/pipe-green-top.png';
+pipe_top.src = '/flappyBird_game/assets/img/pipe-green-top.png';
 const pipe_bottom = new Image();
-pipe_bottom.src = '/YoChoiParanoid/assets/img/pipe-green.png';
+pipe_bottom.src = '/flappyBird_game/assets/img/pipe-green.png';
 
 let game = 'start';
 let frame = 0;
