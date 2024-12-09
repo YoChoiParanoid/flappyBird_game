@@ -19,9 +19,9 @@ const scoreboard = new Image();
 sprites.src = './assets/img/background-night.png';
 message.src = './assets/img/message.png';
 ground.src = './assets/img/base.png';
-bird_up.src = '/assets/img/yellowbird-upflap.png'
-bird_down.src = '/assets/img/yellowbird-downflap.png'
-bird_mid.src = '/assets/img/yellowbird-midflap.png'
+bird_up.src = './assets/img/yellowbird-upflap.png'
+bird_down.src = './assets/img/yellowbird-downflap.png'
+bird_mid.src = './assets/img/yellowbird-midflap.png'
 pipe_top.src = './assets/img/pipe-green-top.png';
 pipe_bottom.src = './assets/img/pipe-green.png';
 gameover.src = './assets/img/gameover.png';
@@ -261,7 +261,6 @@ function uppdateArrPipes() {
         arrPipes.splice(0, 1);
         let pipe = new Pipes(arrPipes[arrPipes.length - 1].cX + random(480, 600), random(-250, -15.5), random(150, 200));
         arrPipes.push(pipe);
-        console.log(arrPipes.length);
     }
 }
 
