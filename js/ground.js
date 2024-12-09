@@ -22,6 +22,6 @@ export class Ground {
     draw() {
         this.ctx.beginPath();
         this.ctx.drawImage(this.image, this.sX, this.sY, this.sW, this.sH, this.cX, this.cY, this.cW, this.cH);
-        console.log(this.birdfly[this.i]);
+        
     }
 }

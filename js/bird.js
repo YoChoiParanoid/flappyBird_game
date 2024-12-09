@@ -37,7 +37,7 @@ export class Bird {
                 }
             }
         }
-
+        console.log(this.birdfly[this.i]);
         this.ctx.drawImage(this.birdfly[this.i], this.sX, this.sY, this.sW, this.sH, this.cX, this.cY, this.cW, this.cH);
     }
 
