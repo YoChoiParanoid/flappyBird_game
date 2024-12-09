@@ -24,6 +24,8 @@ export class Bird {
                     this.i = 0;
                 }
             }
+            console.log(frame);
+            console.log(game);
         }
         
         if (game == 'play') {
