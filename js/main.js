@@ -85,7 +85,7 @@ class Ground {
         this.cW = 477;
         this.cH = 76.5;
 
-        this.dX= -1;
+        this.dX= -3;
     }
 
     draw() {
@@ -146,7 +146,7 @@ class Bird {
         this.cH = 24;
         this.i = 0;
         this.v = 0;
-        this.a = 0.048;
+        this.a = 0.408;
     }
 
     birdfly = [
@@ -228,7 +228,7 @@ class Pipes {
         this.sXb = 0;
         this.sYb = 0;
         this.space = space;
-        this.dX = -1;
+        this.dX = -3;
     }
 
     draw() {
@@ -302,7 +302,7 @@ canvas.addEventListener('click', function(event) {
             break;
         case 'play':
             console.log('playgame');
-            bird.v = -3;
+            bird.v = -7;
             break;
         case 'end':
             console.log('endgame');
